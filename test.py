@@ -1,6 +1,6 @@
 import json
 
-with open("sample.json", "r+") as file:
+with open("todo.json", "r+") as file:
     input = {
         "id":"4",
         "email": "nikhil@geeksforgeeks.org",
@@ -9,5 +9,5 @@ with open("sample.json", "r+") as file:
     
     DATA = json.load(file)
     DATA["tasks"].append(input)
-    file.seek(0)
-    json.dump(DATA, file,indent=4)
+    file.seek(0) # seguimos sin saber que hace esta línea
+    json.dump(DATA, file, indent=4)
