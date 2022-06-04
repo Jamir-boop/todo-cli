@@ -1,8 +1,7 @@
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit import PromptSession
 
-from utils import import_todo
-DATA = import_todo()
+TODO = "todo.json"
 
 # historial persistente
 session = PromptSession(history=FileHistory('.todo_history'))

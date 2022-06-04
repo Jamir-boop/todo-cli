@@ -1,6 +1,7 @@
 import json
+TODO = "todo.json"
 
-with open("todo.json", "r+") as file:
+with open(TODO, "r+") as file:
     input = {
         "id":"4",
         "email": "nikhil@geeksforgeeks.org",
