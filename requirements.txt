@@ -1,1 +1,3 @@
-#nada por ahora -> pero va haber
+prompt-toolkit==3.0.29
+Pygments==2.12.0
+wcwidth==0.2.5

@@ -2,7 +2,7 @@
     "tasks":[
         {
             "name": "task1",
-            "description":"Escribir una novela para el lunes",
+            "description":"pip install pygments",
             "state":"complete"
         },
         {
