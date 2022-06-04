@@ -1,3 +1,4 @@
+import json
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit import PromptSession
 
@@ -15,10 +16,10 @@ DATA = json.load(TODO)
 # historial persistente
 session = PromptSession(history=FileHistory('.todo_history'))
 
-# Do multiple input calls.
 while True:
     text1 = session.prompt('> ')
     if text1.lower() == "list":
+<<<<<<< HEAD
 
 
         # tasks = []
@@ -40,5 +41,10 @@ while True:
                 "\t", data["description"],"\n",
                 "\t", data["state"],"\n")
       
+=======
+        with open(TODO, "r") as file:
+            DATA = json.load(file)
+            print(DATA)
+>>>>>>> cabe1670b5c91a15de69b659402eaeca9cea3d85
     if text1 == "q" or text1 == "exit" or text1 == "quit":
         break
