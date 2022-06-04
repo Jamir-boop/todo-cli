@@ -1,19 +1,19 @@
 
 import json
-from pydoc import describe
 
 f = open('tasks.json')
 data = json.load(f)
 
 tasks = []
 
+
 class task:
     def __init__(self, name, description, state):
         self.name = name
         self.description = description
         self.state = state
-        
 
+# crea un objeto por cada "task"
 for data in data["tasks"]:
     name = data["name"]
     description = data["description"]
