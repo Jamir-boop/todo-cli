@@ -1,18 +1,18 @@
 {
     "tasks":[
         {
-            "name": "task1",
+            "id": "1",
             "description":"formatear json",
             "state":"complete"
         },
         {
-            "name": "task2",
+            "id": "2",
             "description":"crear clase de validator",
             "state":"incomplete"
         },
         {
-            "name": "task3",
-            "description":"Bañar al perro",
+            "id": "3",
+            "description":"organizar clases",
             "state":"complete"
         }
     ]
