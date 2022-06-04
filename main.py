@@ -60,38 +60,40 @@ try:
     while True:
         
         input = session.prompt('> ', bottom_toolbar=bottom_toolbar).lower().split()
-
-        #Create
-        if input[0] == "create":
-            clear()
-            try:    
-                create(DATA, input) 
-                list(DATA)            
-            except:
-                print("A task need a description")
-                pass
-
-        #Read
-        if input[0] == "list":
-            clear()
-            list(DATA)
-
         
-        if input[0] == "clear":
-            clear()
-        
-        #Delete
-        if input[0] == "del":
-            clear()
-            try:
-                delete(DATA, input[1])
-                list(DATA)
-            except:
-                pass
+        if len(input) != 0:
                 
-        if input[0] == "q" or input[0] == "exit" or input[0] == "quit":
-            clear()
-            break
+            #Create
+            if input[0] == "create":
+                clear()
+                try:    
+                    create(DATA, input) 
+                    list(DATA)            
+                except:
+                    print("A task need a description")
+                    pass
+
+            #Read
+            if input[0] == "list":
+                clear()
+                list(DATA)
+
+            
+            if input[0] == "clear":
+                clear()
+            
+            #Delete
+            if input[0] == "del":
+                clear()
+                try:
+                    delete(DATA, input[1])
+                    list(DATA)
+                except:
+                    pass
+                    
+            if input[0] == "q" or input[0] == "exit" or input[0] == "quit":
+                clear()
+                break
 
 except KeyboardInterrupt:
     clear()
