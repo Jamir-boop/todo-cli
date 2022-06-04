@@ -2,12 +2,12 @@
     "tasks":[
         {
             "name": "task1",
-            "description":"pip install pygments",
+            "description":"formatear json",
             "state":"complete"
         },
         {
             "name": "task2",
-            "description":"Limpiar mi cuarto",
+            "description":"crear clase de validator",
             "state":"incomplete"
         },
         {

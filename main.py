@@ -1,8 +1,6 @@
 
-import json
-
-f = open('tasks.json')
-data = json.load(f)
+from utils import import_file
+data = import_file('tasks.json')
 
 tasks = []
 
@@ -28,4 +26,4 @@ buffer1 = Buffer(
     name = "Percy"
 )
 
-print(buffer1.name)
+print(buffer1.name) 
