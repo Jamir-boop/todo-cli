@@ -1,6 +1,8 @@
+from cgitb import text
 import json
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit import PromptSession
+from prompt_toolkit.shortcuts import clear
 
 TODO = "todo.json"
 
@@ -11,15 +13,16 @@ from pydoc import describe
 TODO = open('todo.json')
 DATA = json.load(TODO)
 
+clear()
+
 
 
 # historial persistente
 session = PromptSession(history=FileHistory('.todo_history'))
 
 while True:
-    text1 = session.prompt('> ')
-    if text1.lower() == "list":
-<<<<<<< HEAD
+    input = session.prompt('> ')
+    if input.lower() == "list":
 
 
         # tasks = []
@@ -29,6 +32,8 @@ while True:
         #         self.name = name
         #         self.description = description
         #         self.state = state
+
+        
 
 
         for data in DATA["tasks"]:
@@ -40,11 +45,11 @@ while True:
             print("Task:",data["id"],"\n",
                 "\t", data["description"],"\n",
                 "\t", data["state"],"\n")
+
+    if input.lower() == "clear":
+        clear()
+        
       
-=======
-        with open(TODO, "r") as file:
-            DATA = json.load(file)
-            print(DATA)
->>>>>>> cabe1670b5c91a15de69b659402eaeca9cea3d85
-    if text1 == "q" or text1 == "exit" or text1 == "quit":
+    if input == "q" or input == "exit" or input == "quit":
+        clear()
         break

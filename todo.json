@@ -17,23 +17,8 @@
         },
         {
             "id": "4",
-            "email": "nikhil@geeksforgeeks.org",
-            "job_profile": "Full Time"
-        },
-        {
-            "id": "4",
-            "email": "nikhil@geeksforgeeks.org",
-            "job_profile": "Full Time"
-        },
-        {
-            "id": "4",
-            "email": "nikhil@geeksforgeeks.org",
-            "job_profile": "Full Time"
-        },
-        {
-            "id": "4",
-            "email": "nikhil@geeksforgeeks.org",
-            "job_profile": "Full Time"
+            "description": "nikhil@geeksforgeeks.org",
+            "state": "complete"
         }
     ]
 }
