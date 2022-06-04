@@ -1,0 +1,19 @@
+{
+    "tasks":[
+        {
+            "name": "task1",
+            "description":"Escribir una novela para el lunes",
+            "state":"complete"
+        },
+        {
+            "name": "task2",
+            "description":"Limpiar mi cuarto",
+            "state":"incomplete"
+        },
+        {
+            "name": "task3",
+            "description":"Bañar al perro",
+            "state":"complete"
+        }
+    ]
+}
