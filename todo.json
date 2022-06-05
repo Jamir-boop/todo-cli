@@ -3,22 +3,26 @@
         {
             "id": "1",
             "description": "formatear json",
-            "state": "complete"
+            "state": "complete",
+            "time": "2022-06-04 20:29:28.294142"
         },
         {
             "id": "2",
             "description": "crear clase de validator",
-            "state": "incomplete"
+            "state": "incomplete",
+            "time": "2022-06-04 20:29:28.294142"
         },
         {
             "id": "3",
             "description": "organizar clases",
-            "state": "complete"
+            "state": "complete",
+            "time": "2022-06-04 20:29:28.294142"
         },
         {
             "id": "4",
-            "description": "nikhil@geeksforgeeks.org",
-            "state": "complete"
+            "description": "hacer que delete borre del archivo real",
+            "state": "incomplete",
+            "time": "2022-06-04 20:29:28.294142"
         }
     ]
 }
