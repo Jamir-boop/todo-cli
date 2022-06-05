@@ -1,33 +1,26 @@
-from ast import Delete, Return
-from cgitb import text
 import json
+from datetime import datetime
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit import PromptSession
 from prompt_toolkit.shortcuts import clear
 from prompt_toolkit.formatted_text import HTML
-
+from prompt_toolkit import print_formatted_text as print # reemplaza default print
 
 TODO = "todo.json"
-
-###########################################
-import json
-from pydoc import describe
-
-TODO = open('todo.json')
-DATA = json.load(TODO)
-
-clear()
-
 
 def bottom_toolbar():
     return HTML('This is a <b><style bg="ansired">Toolbar</style></b>!')
 
 
-def list(DATA):
-    for data in DATA["tasks"]:
-        print("Task:",data["id"],"\n",
-            "\t", data["description"],"\n",
-            "\t", data["state"],"\n")
+def list(): # necesita agregar opciones de formateo ("compact", "detailed")
+    clear()
+    file = open('todo.json', "r+")
+    DATA = json.load(file)
+    for item in DATA["tasks"]:
+        if item["state"] == 1:
+            print(item["id"], "√", item["description"], item["priority"], "\n")
+        else:
+            print(item["id"], "•", item["description"], "\n")
 
 
 def delete(DATA, data_id):
@@ -36,65 +29,49 @@ def delete(DATA, data_id):
             DATA["tasks"].remove(data)
 
 
-def create(DATA, input):
-    description_index = input.index("-d")
-    last_index = len(input)
-    description = ' '.join(input[description_index+1:last_index])
+def create(input):
+    with open(TODO, "r+") as file:
+        DATA = json.load(file)
 
-    last_id = int(DATA["tasks"][-1]["id"])
-    
-    DATA["tasks"].append(
-        {
-            "id": str(last_id + 1),
-            "description": description,
-            "state": "incomplete"
-        }
-    )
+        description_index = input.index("-d")
+        last_index = len(input)
+        description = ' '.join(input[description_index + 1:last_index])
+        last_id = int(DATA["tasks"][-1]["id"])
+
+        DATA["tasks"].append(
+            {
+                "id": str(last_id + 1),
+                "description": description,
+                "state": 0,
+                "time": f"{datetime.now()}"
+            }
+        )
+
+        file.seek(0)
+        json.dump(DATA, file, indent=4)
+        file.close()
 
 
 # historial persistente
 session = PromptSession(history=FileHistory('.todo_history'))
 
-try:
-
-    while True:
-        
-        input = session.prompt('> ', bottom_toolbar=bottom_toolbar).lower().split()
-        
-        if len(input) != 0:
-                
-            #Create
-            if input[0] == "create":
-                clear()
-                try:    
-                    create(DATA, input) 
-                    list(DATA)            
-                except:
-                    print("A task need a description")
-                    pass
-
-            #Read
-            if input[0] == "list":
-                clear()
+while True:
+    input = session.prompt('> ', bottom_toolbar=bottom_toolbar).lower().split()
+    
+    if len(input) != 0:
+        if input[0] == "list":
+            list()        
+        if input[0] == "clear" or input[0] == "cls":
+            clear()
+        if input[0] == "add" or input[0] == "create":
+            create(input)
+            list()
+        if input[0] == "del":
+            try:
+                delete(DATA, input[1])
                 list(DATA)
-
-            
-            if input[0] == "clear":
-                clear()
-            
-            #Delete
-            if input[0] == "del":
-                clear()
-                try:
-                    delete(DATA, input[1])
-                    list(DATA)
-                except:
-                    pass
-                    
-            if input[0] == "q" or input[0] == "exit" or input[0] == "quit":
-                clear()
-                break
-
-except KeyboardInterrupt:
-    clear()
-    exit()
+            except:
+                pass
+                
+        if input[0] == "q" or input[0] == "exit" or input[0] == "quit":
+            break

@@ -1,28 +1,32 @@
 {
     "tasks": [
         {
-            "id": "1",
             "description": "formatear json",
-            "state": "complete",
-            "time": "2022-06-04 20:29:28.294142"
+            "time": "2022-06-04 20:29:28.294142",
+            "priority": 1,
+            "state": 1,
+            "id": "1"
         },
         {
-            "id": "2",
             "description": "crear clase de validator",
-            "state": "incomplete",
-            "time": "2022-06-04 20:29:28.294142"
+            "time": "2022-06-04 20:29:28.294142",
+            "priority": 2,
+            "state": 0,
+            "id": "2"
         },
         {
-            "id": "3",
             "description": "organizar clases",
-            "state": "complete",
-            "time": "2022-06-04 20:29:28.294142"
+            "time": "2022-06-04 20:29:28.294142",
+            "priority": 2,
+            "state": 1,
+            "id": "3"
         },
         {
-            "id": "4",
             "description": "hacer que delete borre del archivo real",
-            "state": "incomplete",
-            "time": "2022-06-04 20:29:28.294142"
+            "time": "2022-06-04 20:29:28.294142",
+            "priority": 2,
+            "state": 0,
+            "id": "4"
         }
     ]
 }
