@@ -1,4 +1,5 @@
 import json
+import utils
 from datetime import datetime
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit import PromptSession
@@ -56,7 +57,6 @@ def create(input):
 session = PromptSession(history=FileHistory('.todo_history'))
 
 
-
 ######################### VALIDATOR ##############################
 
 from prompt_toolkit.validation import Validator, ValidationError
@@ -65,17 +65,29 @@ from prompt_toolkit import prompt
 class StringValidator(Validator):
     def validate(self, document):
         text = document.text
-        print(text)
-        
+
         if text and not text.isdigit():
-            i = 0
-            # Get index of first non numeric character.
-            # We want to move the cursor here.
-            for i, c in enumerate(text):
-                if not c.isdigit():
-                    break
-            raise ValidationError(message='This input contains non-numeric characters',
-                                  cursor_position=i)
+            input = utils.parse(text)[0]
+
+            if len(input) != 0:
+                if input[0] == "list":
+                    list()        
+                if input[0] == "clear" or input[0] == "cls":
+                    clear()
+                if input[0] == "add" or input[0] == "create":
+                    create(input)
+                    list()
+                if input[0] == "del":
+                    try:
+                        delete(DATA, input[1])
+                        list(DATA)
+                    except:
+                        pass
+
+                if input[0] == "q" or input[0] == "exit" or input[0] == "quit":
+                    exit()
+        else:
+            raise ValidationError(message='This input contains numeric characters')
 
 ###################### COMPLETER ################################
 
@@ -104,22 +116,4 @@ while True:
     input = session.prompt('> ', validator=StringValidator(),
                                  validate_while_typing=False,
                                  completer=CLI_COMPLETER,
-                                 style=style).lower().split()
-
-    if len(input) != 0:
-        if input[0] == "list":
-            list()        
-        if input[0] == "clear" or input[0] == "cls":
-            clear()
-        if input[0] == "add" or input[0] == "create":
-            create(input)
-            list()
-        if input[0] == "del":
-            try:
-                delete(DATA, input[1])
-                list(DATA)
-            except:
-                pass
-                
-        if input[0] == "q" or input[0] == "exit" or input[0] == "quit":
-            break
+                                 style=style)
