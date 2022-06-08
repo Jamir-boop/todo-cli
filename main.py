@@ -55,9 +55,57 @@ def create(input):
 # historial persistente
 session = PromptSession(history=FileHistory('.todo_history'))
 
+
+
+######################### VALIDATOR ##############################
+
+from prompt_toolkit.validation import Validator, ValidationError
+from prompt_toolkit import prompt
+
+class StringValidator(Validator):
+    def validate(self, document):
+        text = document.text
+        print(text)
+        
+        if text and not text.isdigit():
+            i = 0
+            # Get index of first non numeric character.
+            # We want to move the cursor here.
+            for i, c in enumerate(text):
+                if not c.isdigit():
+                    break
+            raise ValidationError(message='This input contains non-numeric characters',
+                                  cursor_position=i)
+
+###################### COMPLETER ################################
+
+from prompt_toolkit.completion import WordCompleter
+
+CLI_COMPLETER = WordCompleter([
+    'list','clear','delete','add'], ignore_case=True)
+
+
+
+######################### STYLE MENUS #########################
+from prompt_toolkit.styles import Style
+
+style = Style.from_dict({
+    'completion-menu.completion': 'bg:#008888 #ffffff',
+    'completion-menu.completion.current': 'bg:#00aaaa #000000',
+    'scrollbar.background': 'bg:#88aaaa',
+    'scrollbar.button': 'bg:#222222',
+})
+
+
+
+
+
 while True:
-    input = session.prompt('> ', bottom_toolbar=bottom_toolbar).lower().split()
-    
+    input = session.prompt('> ', validator=StringValidator(),
+                                 validate_while_typing=False,
+                                 completer=CLI_COMPLETER,
+                                 style=style).lower().split()
+
     if len(input) != 0:
         if input[0] == "list":
             list()        
