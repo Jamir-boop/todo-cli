@@ -61,7 +61,7 @@ def create(input):
     save_todo(DATA)
     list()
 
-def update(id, input): # update ta creisi
+def update(id, input):
     description = ' '.join(input)
     
     DATA = load_todo()
