@@ -44,10 +44,7 @@ def delete(id):
     list()
 
 def create(input):
-    description_index = input.index("add")
-    last_index = len(input)
-
-    description = ' '.join(input[description_index + 1:last_index])
+    description = ' '.join(input)
 
     DATA = load_todo()
     last_id = int(DATA["tasks"][-1]["id"] + 1) # toma ultimo id + 1
@@ -65,8 +62,9 @@ def create(input):
     list()
 
 def update(id, input):
-    DATA = load_todo()
     description = ' '.join(input)
+    
+    DATA = load_todo()
     DATA["tasks"][int(id)]["description"] = description
     save_todo(DATA)
     list()
@@ -89,7 +87,7 @@ class StringValidator(Validator):
                 if input[0] == "clear" or input[0] == "cls":
                     clear()
                 if input[0] == "add" or input[0] == "create":
-                    create(input)
+                    create(input[1:])
                 if input[0] == "del": # manejar input inadecuado (ej. fuera de index)
                     delete(input[1])
                 if input[0] == "update" or input[0] == "up": # manejar input inadecuado (ej. fuera de index)
