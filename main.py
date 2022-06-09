@@ -61,11 +61,11 @@ def create(input):
     save_todo(DATA)
     list()
 
-def update(id, input):
+def update(id, input): # update ta creisi
     description = ' '.join(input)
     
     DATA = load_todo()
-    DATA["tasks"][int(id)]["description"] = description
+    DATA["tasks"][int(id)-1]["description"] = description
     save_todo(DATA)
     list()
 
