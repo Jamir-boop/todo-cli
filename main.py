@@ -6,50 +6,42 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.shortcuts import clear
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit import print_formatted_text as print # reemplaza default print
+from prompt_toolkit.validation import Validator, ValidationError
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import WordCompleter
 
 TODO = "todo.json"
-
-def bottom_toolbar():
-    return HTML('This is a <b><style bg="ansired">Toolbar</style></b>!')
-
+def reset_todo(): # para tests
+    DATA_INICIAL = {"tasks":[{"id":12,"priority":1,"description":"Primer pendiente y por eso el mejor","time":"2022-06-04 20:29:28.294142","state":0},{"id":13,"priority":0,"description":"crear clase de validator","time":"2022-06-04 20:29:28.294142","state":0},{"id":22,"priority":2,"description":"organizar clases","time":"2022-06-04 20:29:28.294142","state":1},{"id":40,"priority":2,"description":"este es un documento","time":"2022-06-08 23:29:49.074971","state":0}]}
+    with open(TODO, 'w') as file:
+        file.seek(0)
+        json.dump(DATA_INICIAL, file, indent=4)
+reset_todo()
 
 def list(): # necesita agregar opciones de formateo ("compact", "detailed")
     clear()
     file = open('todo.json', "r+")
     DATA = json.load(file)
+    contador = 0
     for item in DATA["tasks"]:
+        contador += 1
         if item["state"] == 1:
-            print(item["id"], "√", item["description"], item["priority"], "\n")
+            print(contador, "√", item["description"], item["priority"], "\n")
         else:
-            print(item["id"], "•", item["description"], "\n")
+            print(contador, "•", item["description"], "\n")
 
-def delete(data_id):
-    
-    #print("#############################################")
+def load_todo():
+    with open(TODO) as file:
+        return json.load(file)
 
-    X =  json.load(open(TODO, "r+"))
+def save_todo(data):
+    with open(TODO, 'w') as file:
+        json.dump(data, file, indent=4)
 
-    DATA = X
-
-    X.close()
-
-    print(DATA)
-
-    #print(DATA)
-
-    for data in DATA["tasks"]:
-        if data["id"] == data_id:
-            DATA["tasks"].remove(data)
-
-
-    #print("#############################################")
-    print(DATA["tasks"])
-
-
-
-    
-    
-    
+def delete(id):
+    DATA = load_todo()
+    del DATA["tasks"][id-1]
+    save_todo(DATA)
 
 
 def create(input):
@@ -81,12 +73,6 @@ session = PromptSession(history=FileHistory('.todo_history'))
 
 
 ######################### VALIDATOR ##############################
-
-from prompt_toolkit.validation import Validator, ValidationError
-from prompt_toolkit import prompt
-import argparse
-
-
 class StringValidator(Validator):
     def validate(self, document):
         text = document.text
@@ -95,7 +81,7 @@ class StringValidator(Validator):
             input = utils.parse(text)[0]
 
             if len(input) != 0:
-                if input[0] == "list":
+                if input[0] == "list" or input[0] == "ls":
                     list()        
                 if input[0] == "clear" or input[0] == "cls":
                     clear()
@@ -103,20 +89,14 @@ class StringValidator(Validator):
                     create(input)
                     list()
                 if input[0] == "del":
-                    try:
-                        delete(input[1])
-                        list()
-                    except:
-                        pass
+                    delete(int(input[1]))
+                    list()
 
                 if input[0] == "q" or input[0] == "exit" or input[0] == "quit":
                     exit()
         else:
             raise ValidationError(message='This input contains numeric characters')
 
-###################### COMPLETER ################################
-
-from prompt_toolkit.completion import WordCompleter
 
 CLI_COMPLETER = WordCompleter([
     'list','clear','del','add'], ignore_case=True)
