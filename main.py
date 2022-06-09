@@ -23,20 +23,43 @@ def list(): # necesita agregar opciones de formateo ("compact", "detailed")
         else:
             print(item["id"], "•", item["description"], "\n")
 
+def delete(data_id):
+    
+    #print("#############################################")
 
-def delete(DATA, data_id):
+    X =  json.load(open(TODO, "r+"))
+
+    DATA = X
+
+    X.close()
+
+    print(DATA)
+
+    #print(DATA)
+
     for data in DATA["tasks"]:
         if data["id"] == data_id:
             DATA["tasks"].remove(data)
 
 
+    #print("#############################################")
+    print(DATA["tasks"])
+
+
+
+    
+    
+    
+
+
 def create(input):
     with open(TODO, "r+") as file:
-        DATA = json.load(file)
+        description_index = input.index("add")
 
-        description_index = input.index("-d")
         last_index = len(input)
         description = ' '.join(input[description_index + 1:last_index])
+
+        DATA = json.load(file)
         last_id = int(DATA["tasks"][-1]["id"])
 
         DATA["tasks"].append(
@@ -61,11 +84,13 @@ session = PromptSession(history=FileHistory('.todo_history'))
 
 from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit import prompt
+import argparse
+
 
 class StringValidator(Validator):
     def validate(self, document):
         text = document.text
-
+        
         if text and not text.isdigit():
             input = utils.parse(text)[0]
 
@@ -74,13 +99,13 @@ class StringValidator(Validator):
                     list()        
                 if input[0] == "clear" or input[0] == "cls":
                     clear()
-                if input[0] == "add" or input[0] == "create":
+                if input[0] == "add":
                     create(input)
                     list()
                 if input[0] == "del":
                     try:
-                        delete(DATA, input[1])
-                        list(DATA)
+                        delete(input[1])
+                        list()
                     except:
                         pass
 
@@ -94,8 +119,7 @@ class StringValidator(Validator):
 from prompt_toolkit.completion import WordCompleter
 
 CLI_COMPLETER = WordCompleter([
-    'list','clear','delete','add'], ignore_case=True)
-
+    'list','clear','del','add'], ignore_case=True)
 
 
 ######################### STYLE MENUS #########################
@@ -107,8 +131,6 @@ style = Style.from_dict({
     'scrollbar.background': 'bg:#88aaaa',
     'scrollbar.button': 'bg:#222222',
 })
-
-
 
 
 
