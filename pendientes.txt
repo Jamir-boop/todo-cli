@@ -1,0 +1,20 @@
+CRUD
+	agregar opción help (temporal para ir actualizando)
+	update
+		cambiar estado de task
+		
+Recursion en validación "&&"
+Avisar despues de cada acción
+Autosuggest y Autocomplete
+Backups
+Implementar grupos ("tasks")
+Agregar deadlines
+
+Solucionar error al cerrar con control+c (sin try catch)
+	Puede ser con keybinds
+Config
+	ls listar compacto o detallado
+Diseño
+	Tasks completados gris				
+INVETIGAR 
+	Agregar funcionalidad de Aliases

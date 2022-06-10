@@ -17,7 +17,7 @@ def reset_todo():
     with open(TODO, 'w') as file:
         file.seek(0)
         json.dump(DATA_INICIAL, file, indent=4)
-reset_todo() # para tests (resetea contenido de todo.json)
+reset_todo()
 
 def load_todo():
     with open(TODO) as file:
@@ -38,22 +38,16 @@ def list(): # agregar buscador como argumento opcional
         else:
             print(contador, "[ ]", item["description"], "\n")
 
-def delete(id):
-    id = int(id) - 1    
-    DATA = load_todo()
-    del DATA["tasks"][id]
-    save_todo(DATA)
-    list()
-
 def create(input):
     description = ' '.join(input)
 
     DATA = load_todo()
     last_id = int(DATA["tasks"][-1]["id"]) # toma ultimo del grupo
+    last_id += 1
 
     DATA["tasks"].append(
         {
-            "id": last_id + 1,
+            "id": last_id,
             "priority": 2,
             "description": description,
             "state": 0,
@@ -63,45 +57,81 @@ def create(input):
     save_todo(DATA)
     list()
 
-def update(id, input):
-    description = ' '.join(input)
-    
+def delete(id):
+    id = int(id) - 1    
     DATA = load_todo()
-    DATA["tasks"][int(id)-1]["description"] = description
+
+    try:
+        del DATA["tasks"][id]
+    except IndexError:
+        raise ValidationError(message=f"{id+1} out of range.")
+
+
     save_todo(DATA)
     list()
 
-class StringValidator(Validator):
+def update(id, input):
+    id = int(id) - 1
+    description = ' '.join(input)
+    
+    DATA = load_todo()
+    try:
+        DATA["tasks"][id]["description"] = description # atrapar error de fuera de indexs
+    except IndexError:
+        raise ValidationError(message=f"{id+1} out of range.")
+    save_todo(DATA)
+    list()
+
+def complete(id):
+    id = int(id) - 1
+    DATA = load_todo()
+    try:
+        DATA["tasks"][id]["state"] = 1
+    except IndexError:
+        raise ValidationError(message=f"{id+1} out of range.")
+    save_todo(DATA)
+    list()
+
+class InputValidator(Validator):
     def validate(self, document):
         text = document.text
-    
         input = text.split()
 
-        if input[0] == "list" or input[0] == "ls": # agregar opcion para listar solo pendientes
-            list()
+        if len(input) != 0:
+            if input[0] == "list" or input[0] == "ls": # agregar opcion para listar solo pendientes
+                list()
 
-        elif input[0] == "clear" or input[0] == "cls":
-            clear()
+            elif input[0] == "clear" or input[0] == "cls":
+                clear()
 
-        elif input[0] == "add" or input[0] == "create":
-            create(input[1:])
+            elif input[0] == "add" or input[0] == "create":
+                create(input[1:])
 
-        elif input[0] == "del":            
-            if len(input[1:]) == 1:
-                delete(input[1])
+            elif input[0] == "del":
+                if len(input[1:]) == 1 and int(input[1]) >= 1:
+                    delete(input[1])
+                else:
+                    raise ValidationError(message='use "del <id>" to delete one task.')
+
+            elif input[0] == "update" or input[0] == "up":
+                if input[1].isnumeric() and int(input[1]) >= 1:
+                    update(input[1], input[2:])
+                else:
+                    raise ValidationError(message='use "up <id> <new task>" to update one task.')
+
+            elif input[0] == "complete" or input[0] == "done":
+                if input[1].isnumeric() and int(input[1]) >= 1:
+                    complete(input[1])
+                else:
+                    raise ValidationError(message='use "complete <id>" to mark task as completed.')
+
+            elif input[0] == "q" or input[0] == "exit" or input[0] == "quit":
+                exit()
             else:
-                raise ValidationError(message='use "del <id>" to delete only one task')
-
-        elif input[0] == "update" or input[0] == "up": # manejar input (posibles errores de input)
-            update(input[1], input[2:])
-
-        elif input[0] == "q" or input[0] == "exit" or input[0] == "quit":
-            exit()
-        else:
-            raise ValidationError(message='use "help, add <id>, list, del <id>, up <id> <content> ..., ')
+                raise ValidationError(message='Is not a todo-cli command (See "help")')
 
 
-# estilo debe ir en style.py
+# mover estilo a style.py
 style = Style.from_dict({    
     'completion-menu.completion': 'bg:#008888 #ffffff',
     'completion-menu.completion.current': 'bg:#00aaaa #000000',
@@ -114,7 +144,7 @@ session = PromptSession(history=FileHistory('.todo_history'))
 
 CLI_COMPLETER = WordCompleter(['list','clear','del','add'], ignore_case=True)
 while True:
-    input = session.prompt('> ', validator=StringValidator(),
+    input = session.prompt('$ ', validator=InputValidator(),
                                  validate_while_typing=False,
                                  completer=CLI_COMPLETER,
                                  style=style)
