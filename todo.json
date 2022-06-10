@@ -1,20 +1,6 @@
 {
     "tasks": [
         {
-            "id": 12,
-            "priority": 1,
-            "description": "Primer pendiente y por eso el mejor",
-            "time": "2022-06-04 20:29:28.294142",
-            "state": 0
-        },
-        {
-            "id": 13,
-            "priority": 0,
-            "description": "crear clase de validator",
-            "time": "2022-06-04 20:29:28.294142",
-            "state": 0
-        },
-        {
             "id": 22,
             "priority": 2,
             "description": "organizar clases",
@@ -22,11 +8,18 @@
             "state": 1
         },
         {
-            "id": 40,
+            "id": 41,
             "priority": 2,
-            "description": "este es un documento",
-            "time": "2022-06-08 23:29:49.074971",
-            "state": 0
+            "description": "Esta es otra lista",
+            "state": 0,
+            "time": "2022-06-10 01:17:03.331251"
+        },
+        {
+            "id": 42,
+            "priority": 2,
+            "description": "another one",
+            "state": 0,
+            "time": "2022-06-10 01:17:23.910904"
         }
     ]
 }

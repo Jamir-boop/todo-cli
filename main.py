@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from sys import base_prefix
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit import PromptSession
 from prompt_toolkit.shortcuts import clear
@@ -9,6 +10,36 @@ from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style
+
+
+
+######### Solucionar error al cerrar con control+c (sin try catch) #########
+
+from prompt_toolkit.application import run_in_terminal
+from prompt_toolkit.key_binding import KeyBindings
+
+bindings = KeyBindings()
+
+@bindings.add('c-c')
+def _(event):
+    exit()
+
+
+from prompt_toolkit import print_formatted_text, HTML
+
+
+class mensajeGlobal:
+    MESSAGE_GLOBAL = "welcome!!!"
+
+print(mensajeGlobal.MESSAGE_GLOBAL)
+
+def bottom_toolbar(text):
+    output = text
+    return HTML(output)
+
+################################################################################
+
+
 
 TODO = "todo.json"
 
@@ -57,19 +88,34 @@ def create(input):
     save_todo(DATA)
     list()
 
+    #####################################################
+
+    mensajeGlobal.MESSAGE_GLOBAL = f"Task created"
+
+    ######################################################
+
+
+
 def delete(id):
     id = int(id) - 1    
     DATA = load_todo()
 
     try:
         del DATA["tasks"][id]
+
     except IndexError:
         raise ValidationError(message=f"{id+1} out of range.")
-
 
     save_todo(DATA)
     list()
 
+    ###################################################
+
+    mensajeGlobal.MESSAGE_GLOBAL = f"Task deleted"
+
+    ##################################################
+
+    
 def update(id, input):
     id = int(id) - 1
     description = ' '.join(input)
@@ -82,6 +128,12 @@ def update(id, input):
     save_todo(DATA)
     list()
 
+    ##########################################################
+
+    mensajeGlobal.MESSAGE_GLOBAL = f"Task updated"
+
+    #########################################################
+
 def complete(id):
     id = int(id) - 1
     DATA = load_todo()
@@ -91,6 +143,7 @@ def complete(id):
         raise ValidationError(message=f"{id+1} out of range.")
     save_todo(DATA)
     list()
+
 
 class InputValidator(Validator):
     def validate(self, document):
@@ -109,7 +162,7 @@ class InputValidator(Validator):
 
             elif input[0] == "del":
                 if len(input[1:]) == 1 and int(input[1]) >= 1:
-                    delete(input[1])
+                    delete(input[1]) 
                 else:
                     raise ValidationError(message='use "del <id>" to delete one task.')
 
@@ -129,6 +182,7 @@ class InputValidator(Validator):
                 exit()
             else:
                 raise ValidationError(message='Is not a todo-cli command (See "help")')
+            
 
 
 # mover estilo a style.py
@@ -145,6 +199,8 @@ session = PromptSession(history=FileHistory('.todo_history'))
 CLI_COMPLETER = WordCompleter(['list','clear','del','add'], ignore_case=True)
 while True:
     input = session.prompt('$ ', validator=InputValidator(),
-                                 validate_while_typing=False,
-                                 completer=CLI_COMPLETER,
-                                 style=style)
+                                validate_while_typing=False,
+                                completer=CLI_COMPLETER,
+                                style=style,
+                                key_bindings=bindings,
+                                bottom_toolbar=bottom_toolbar(mensajeGlobal.MESSAGE_GLOBAL))
