@@ -2,8 +2,12 @@ CRUD
 	agregar opción help (temporal para ir actualizando)
 	update
 		cambiar estado de task
+	list
+		listar primero pendientes luego completados ***
+	add
+		datetime no es necesario
 		
-
+AGREGAR CLASE PARA ORGANIZAR MÁS BONITO EL CODIGO
 Autosuggest y Autocomplete
 Backups
 Implementar grupos ("tasks")
@@ -15,7 +19,6 @@ Diseño
 	Tasks completados gris				
 INVETIGAR 
 	Agregar funcionalidad de Aliases
-
 
 Percy's
 

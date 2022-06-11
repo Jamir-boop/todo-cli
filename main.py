@@ -1,6 +1,5 @@
 import json
 from datetime import datetime
-from sys import base_prefix
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit import PromptSession
 from prompt_toolkit.shortcuts import clear
@@ -10,11 +9,6 @@ from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style
-
-
-
-######### Solucionar error al cerrar con control+c (sin try catch) #########
-
 from prompt_toolkit.application import run_in_terminal
 from prompt_toolkit.key_binding import KeyBindings
 
@@ -36,8 +30,6 @@ print(mensajeGlobal.MESSAGE_GLOBAL)
 def bottom_toolbar(text):
     output = text
     return HTML(output)
-
-################################################################################
 
 
 
@@ -87,13 +79,7 @@ def create(input):
     )
     save_todo(DATA)
     list()
-
-    #####################################################
-
     mensajeGlobal.MESSAGE_GLOBAL = f"Task created"
-
-    ######################################################
-
 
 
 def delete(id):
@@ -109,11 +95,7 @@ def delete(id):
     save_todo(DATA)
     list()
 
-    ###################################################
-
     mensajeGlobal.MESSAGE_GLOBAL = f"Task deleted"
-
-    ##################################################
 
     
 def update(id, input):
@@ -127,12 +109,7 @@ def update(id, input):
         raise ValidationError(message=f"{id+1} out of range.")
     save_todo(DATA)
     list()
-
-    ##########################################################
-
     mensajeGlobal.MESSAGE_GLOBAL = f"Task updated"
-
-    #########################################################
 
 def complete(id):
     id = int(id) - 1
