@@ -18,10 +18,6 @@ bindings = KeyBindings()
 def _(event):
     exit()
 
-
-from prompt_toolkit import print_formatted_text, HTML
-
-
 class mensajeGlobal:
     MESSAGE_GLOBAL = "welcome!!!"
 
@@ -81,7 +77,6 @@ def create(input):
     list()
     mensajeGlobal.MESSAGE_GLOBAL = f"Task created"
 
-
 def delete(id):
     id = int(id) - 1    
     DATA = load_todo()
@@ -96,7 +91,6 @@ def delete(id):
     list()
 
     mensajeGlobal.MESSAGE_GLOBAL = f"Task deleted"
-
     
 def update(id, input):
     id = int(id) - 1
