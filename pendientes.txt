@@ -9,6 +9,7 @@ CRUD
 	add
 		datetime no es necesario
 
+El estilo de help_text está roto (primera y segunda línea imprimen con tabulación)
 Agregar help_text a todos los comandos
 Aceptar varios inputs de código "&&"
 Buscar mejor implementacion de clase inputvalidator (main.py)		
