@@ -1,177 +1,111 @@
-import json
-from datetime import datetime
-from prompt_toolkit.history import FileHistory
+import os
+import sys
+import pkgutil
+import importlib
+
+from importlib import import_module
 from prompt_toolkit import PromptSession
-from prompt_toolkit.shortcuts import clear
-from prompt_toolkit.formatted_text import HTML
-from prompt_toolkit import print_formatted_text as print # reemplaza default print
-from prompt_toolkit.validation import Validator, ValidationError
-from prompt_toolkit import prompt
-from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style
-from prompt_toolkit.application import run_in_terminal
 from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit.history import FileHistory
+from prompt_toolkit.validation import Validator, ValidationError
 
-bindings = KeyBindings()
-
-@bindings.add('c-c')
-def _(event):
-    exit()
-
-class mensajeGlobal:
-    MESSAGE_GLOBAL = "welcome!!!"
-
-print(mensajeGlobal.MESSAGE_GLOBAL)
-
-def bottom_toolbar(text):
-    output = text
-    return HTML(output)
-
-
-
-TODO = "todo.json"
-
-def reset_todo():
-    DATA_INICIAL = {"tasks":[{"id":12,"priority":1,"description":"Primer pendiente y por eso el mejor","time":"2022-06-04 20:29:28.294142","state":0},{"id":13,"priority":0,"description":"crear clase de validator","time":"2022-06-04 20:29:28.294142","state":0},{"id":22,"priority":2,"description":"organizar clases","time":"2022-06-04 20:29:28.294142","state":1},{"id":40,"priority":2,"description":"este es un documento","time":"2022-06-08 23:29:49.074971","state":0}]}
-    with open(TODO, 'w') as file:
-        file.seek(0)
-        json.dump(DATA_INICIAL, file, indent=4)
-reset_todo()
-
-def load_todo():
-    with open(TODO) as file:
-        return json.load(file)
-
-def save_todo(data):
-    with open(TODO, 'w') as file:
-        json.dump(data, file, indent=4)
-
-def list(): # agregar buscador como argumento opcional
-    clear()
-    DATA = load_todo()
-    contador = 0
-    for item in DATA["tasks"]:
-        contador += 1
-        if item["state"] == 1:
-            print(contador, "[•]", item["description"], "\n")
-        else:
-            print(contador, "[ ]", item["description"], "\n")
-
-def create(input):
-    description = ' '.join(input)
-
-    DATA = load_todo()
-    last_id = int(DATA["tasks"][-1]["id"]) # toma ultimo del grupo
-    last_id += 1
-
-    DATA["tasks"].append(
-        {
-            "id": last_id,
-            "priority": 2,
-            "description": description,
-            "state": 0,
-            "time": f"{datetime.now()}"
-        }
-    )
-    save_todo(DATA)
-    list()
-    mensajeGlobal.MESSAGE_GLOBAL = f"Task created"
-
-def delete(id):
-    id = int(id) - 1    
-    DATA = load_todo()
-
-    try:
-        del DATA["tasks"][id]
-
-    except IndexError:
-        raise ValidationError(message=f"{id+1} out of range.")
-
-    save_todo(DATA)
-    list()
-
-    mensajeGlobal.MESSAGE_GLOBAL = f"Task deleted"
-    
-def update(id, input):
-    id = int(id) - 1
-    description = ' '.join(input)
-    
-    DATA = load_todo()
-    try:
-        DATA["tasks"][id]["description"] = description # atrapar error de fuera de indexs
-    except IndexError:
-        raise ValidationError(message=f"{id+1} out of range.")
-    save_todo(DATA)
-    list()
-    mensajeGlobal.MESSAGE_GLOBAL = f"Task updated"
-
-def complete(id):
-    id = int(id) - 1
-    DATA = load_todo()
-    try:
-        DATA["tasks"][id]["state"] = 1
-    except IndexError:
-        raise ValidationError(message=f"{id+1} out of range.")
-    save_todo(DATA)
-    list()
-
-
-class InputValidator(Validator):
-    def validate(self, document):
-        text = document.text
-        input = text.split()
-
-        if len(input) != 0:
-            if input[0] == "list" or input[0] == "ls": # agregar opcion para listar solo pendientes
-                list()
-
-            elif input[0] == "clear" or input[0] == "cls":
-                clear()
-
-            elif input[0] == "add" or input[0] == "create":
-                create(input[1:])
-
-            elif input[0] == "del":
-                if len(input[1:]) == 1 and int(input[1]) >= 1:
-                    delete(input[1]) 
-                else:
-                    raise ValidationError(message='use "del <id>" to delete one task.')
-
-            elif input[0] == "update" or input[0] == "up":
-                if input[1].isnumeric() and int(input[1]) >= 1:
-                    update(input[1], input[2:])
-                else:
-                    raise ValidationError(message='use "up <id> <new task>" to update one task.')
-
-            elif input[0] == "complete" or input[0] == "done":
-                if input[1].isnumeric() and int(input[1]) >= 1:
-                    complete(input[1])
-                else:
-                    raise ValidationError(message='use "complete <id>" to mark task as completed.')
-
-            elif input[0] == "q" or input[0] == "exit" or input[0] == "quit":
-                exit()
-            else:
-                raise ValidationError(message='Is not a todo-cli command (See "help")')
-            
-
-
-# mover estilo a style.py
-style = Style.from_dict({    
-    'completion-menu.completion': 'bg:#008888 #ffffff',
-    'completion-menu.completion.current': 'bg:#00aaaa #000000',
-    'scrollbar.background': 'bg:#88aaaa',
-    'scrollbar.button': 'bg:#222222',
-})
-
-list()
 session = PromptSession(history=FileHistory('.todo_history'))
 
-CLI_COMPLETER = WordCompleter(['list','clear','del','add'], ignore_case=True)
-while True:
-    input = session.prompt('$ ', validator=InputValidator(),
-                                validate_while_typing=False,
-                                completer=CLI_COMPLETER,
-                                style=style,
-                                key_bindings=bindings,
-                                bottom_toolbar=bottom_toolbar(mensajeGlobal.MESSAGE_GLOBAL))
+
+class Todo():
+    base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__)))
+    commands = {}
+
+    style = Style.from_dict(
+        {
+            'rprompt': 'white bg:purple',
+        }
+    )
+
+    keybinds = KeyBindings()
+
+    @keybinds.add('c-c')
+    def _(event):
+        exit()
+
+    @keybinds.add('c-d')
+    def _(event):
+        exit()
+
+
+class inputValidator(Validator):
+    def __init__(self, todoobject):
+        self.todoobject = todoobject
+
+    def validate(self, document):
+        text = document.text
+        user_input = text.split()
+        for i in user_input:
+            if i == " ":
+                return
+
+        if user_input and not user_input[0] in self.todoobject.commands:
+            raise ValidationError(message=f"Unknown command {text}")
+
+
+def load_commands(todo, session):
+    path = os.path.join(os.path.dirname(__file__), "commands")
+    modules = pkgutil.iter_modules(path=[path])
+
+    for loader, mod_name, ispkg in modules:
+        # Ensure that module isn't already loaded
+        if mod_name not in sys.modules:
+            # Import module
+            loaded_mod = import_module("commands." + mod_name)
+
+            # Load class from imported module
+            class_name = "".join([x.title() for x in mod_name.split("_")])
+            loaded_class = getattr(loaded_mod, class_name, None)
+            if not loaded_class:
+                continue
+
+            # Create an instance of the class
+            instance = loaded_class(todo, session)
+
+
+def main_loop():
+    todo = Todo()
+    session = PromptSession()
+    load_commands(Todo, session)
+
+    def time_emoji():
+        import datetime
+        now = datetime.datetime.now()
+        if now.hour >= 18 or now.hour < 6:
+            print("🌙")
+        else:
+            print("🌞")
+
+    # list when the app starts
+    list_open = todo.commands.get("list")
+    list_open.do_command("list")
+    while True:
+        user_input = session.prompt(
+            "$ ",
+            # completer=ClaseCOmpletadora(),
+            # auto_suggest=AutoSuggestFromHistory(),
+            validator=inputValidator(todo),
+            key_bindings=todo.keybinds,
+            style=todo.style,
+        )
+        if not user_input:
+            continue
+        else:
+            user_input = user_input.split()
+
+        command = todo.commands.get(user_input[0].lower()) or None
+        if not command:
+            print("Unknown command")
+            continue
+
+        command.do_command(*user_input[1:])
+
+
+if __name__ == "__main__":
+    main_loop()

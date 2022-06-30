@@ -1,3 +1,5 @@
+AGREGAR CLASE PARA ORGANIZAR MÁS BONITO EL CODIGO (HECHO)
+
 CRUD
 	agregar opción help (temporal para ir actualizando)
 	update
@@ -7,7 +9,6 @@ CRUD
 	add
 		datetime no es necesario
 		
-AGREGAR CLASE PARA ORGANIZAR MÁS BONITO EL CODIGO
 Autosuggest y Autocomplete
 Backups
 Implementar grupos ("tasks")
