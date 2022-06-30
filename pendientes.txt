@@ -1,31 +1,27 @@
-AGREGAR CLASE PARA ORGANIZAR MÁS BONITO EL CODIGO (HECHO)
-
 CRUD
-	agregar opción help (temporal para ir actualizando)
 	update
 		cambiar estado de task
 	list
 		listar primero pendientes luego completados ***
 	add
 		datetime no es necesario
-		
-Autosuggest y Autocomplete
+
+Aceptar varios inputs de código "&&"
+Buscar mejor implementacion de clase inputvalidator (main.py)		
+Autocomplete
+	https://python-prompt-toolkit.readthedocs.io/en/master/pages/asking_for_input.html#nested-completion
+	agregar funcionalidad que lea sub-commandos de cada comando para crear un diccionario general que pasará a autocompletar
+Autosuggest
 Backups
 Implementar grupos ("tasks")
 Agregar deadlines
 
 Config
 	ls listar compacto o detallado
+	temas
+
 Diseño
 	Tasks completados gris				
-INVETIGAR 
+
+INVESTIGAR 
 	Agregar funcionalidad de Aliases
-
-Percy's
-
-Recursion en validación "&&"
-
-- Avisar despues de cada acción ("Haz borrado la tarea 1") 
-
-- Solucionar error al cerrar con control+c (sin try catch)
-- Puede ser con keybinds

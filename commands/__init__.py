@@ -1,7 +1,6 @@
 import os
 import json
 
-from prompt_toolkit import print_formatted_text, HTML
 from prompt_toolkit.styles import Style
 
 TODO_FILE = "todo.json"
@@ -10,13 +9,8 @@ TODO_FILE = "todo.json"
 class Command:
     keywords = []
 
-    style = Style.from_dict(
-        {
-            "completion-menu.completion": "bg:#008888 #ffffff"
-        }
-    )
-
     def __init__(self, todo, session):
+        self.reset_todo()
         self.todo = todo
         self.session = session
 
@@ -39,9 +33,6 @@ class Command:
             print(help_text.strip())
         else:
             print(f"No help text available for: {keyword}")
-
-    def print(self, content):
-        print_formatted_text(HTML(content), style=self.style)
 
     def reset_todo(self):
         DATA_INICIAL = {"tasks": [{"id": 12, "priority": 1, "description": "Primer pendiente y por eso el mejor", "time": "2022-06-04 20:29:28.294142", "state": 0}, {"id": 13, "priority": 0, "description": "crear clase de validator", "time": "2022-06-04 20:29:28.294142",

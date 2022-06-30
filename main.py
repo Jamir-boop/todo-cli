@@ -9,17 +9,34 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.validation import Validator, ValidationError
+from prompt_toolkit.shortcuts import clear
 
-session = PromptSession(history=FileHistory('.todo_history'))
+
+def look_for_history_file(filename):
+    if not os.path.exists(filename):
+        with open(filename, "w") as f:
+            f.write("")
+
+
+def time_emoji():
+    import datetime
+    now = datetime.datetime.now()
+    if now.hour >= 18 or now.hour < 6:
+        return "🌙"
+    else:
+        return "🌞"
 
 
 class Todo():
     base_dir = os.path.normpath(os.path.join(os.path.dirname(__file__)))
     commands = {}
+    rprompt_message = time_emoji()
+    time_emoji = time_emoji()
 
     style = Style.from_dict(
         {
-            'rprompt': 'white bg:purple',
+            'rprompt': 'bg:black',
+            'btoolbar': 'bg:black',
         }
     )
 
@@ -27,14 +44,17 @@ class Todo():
 
     @keybinds.add('c-c')
     def _(event):
+        clear()
         exit()
 
     @keybinds.add('c-d')
     def _(event):
+        clear()
         exit()
 
 
 class inputValidator(Validator):
+    # este validador no me convence para nada
     def __init__(self, todoobject):
         self.todoobject = todoobject
 
@@ -71,16 +91,11 @@ def load_commands(todo, session):
 
 def main_loop():
     todo = Todo()
-    session = PromptSession()
-    load_commands(Todo, session)
 
-    def time_emoji():
-        import datetime
-        now = datetime.datetime.now()
-        if now.hour >= 18 or now.hour < 6:
-            print("🌙")
-        else:
-            print("🌞")
+    look_for_history_file('.todo_history')
+    session = PromptSession(history=FileHistory('.todo_history'))
+
+    load_commands(Todo, session)
 
     # list when the app starts
     list_open = todo.commands.get("list")
@@ -92,6 +107,7 @@ def main_loop():
             # auto_suggest=AutoSuggestFromHistory(),
             validator=inputValidator(todo),
             key_bindings=todo.keybinds,
+            rprompt=todo.rprompt_message,
             style=todo.style,
         )
         if not user_input:

@@ -20,26 +20,6 @@ BASE_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__)))
 TODO_FILE = f"{BASE_DIR}\\todo.json"
 
 
-def load_commands(game, session, player_view):
-    path = os.path.join(os.path.dirname(__file__), "commands")
-    modules = pkgutil.iter_modules(path=[path])
-
-    for loader, mod_name, ispkg in modules:
-        # Ensure that module isn't already loaded
-        if mod_name not in sys.modules:
-            # Import module
-            loaded_mod = import_module("commands." + mod_name)
-
-            # Load class from imported module
-            class_name = "".join([x.title() for x in mod_name.split("_")])
-            loaded_class = getattr(loaded_mod, class_name, None)
-            if not loaded_class:
-                continue
-
-            # Create an instance of the class
-            instance = loaded_class(game, session, player_view)
-
-
 def reset_todo():
     DATA_INICIAL = {"tasks": [{"id": 12, "priority": 1, "description": "Primer pendiente y por eso el mejor", "time": "2022-06-04 20:29:28.294142", "state": 0}, {"id": 13, "priority": 0, "description": "crear clase de validator", "time": "2022-06-04 20:29:28.294142",
                                                                                                                                                                   "state": 0}, {"id": 22, "priority": 2, "description": "organizar clases", "time": "2022-06-04 20:29:28.294142", "state": 1}, {"id": 40, "priority": 2, "description": "este es un documento", "time": "2022-06-08 23:29:49.074971", "state": 0}]}
