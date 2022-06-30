@@ -1,6 +1,13 @@
 {
     "tasks": [
         {
+            "id": 12,
+            "priority": 1,
+            "description": "Primer pendiente y por eso el mejor",
+            "time": "2022-06-04 20:29:28.294142",
+            "state": 0
+        },
+        {
             "id": 13,
             "priority": 0,
             "description": "crear clase de validator",

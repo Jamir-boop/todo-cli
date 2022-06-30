@@ -1,4 +1,6 @@
 CRUD
+	delete 
+		agregar funcionalidad para borrar grupos de tasks con confirmacion
 	update
 		cambiar estado de task
 	list
@@ -6,6 +8,7 @@ CRUD
 	add
 		datetime no es necesario
 
+Agregar help_text a todos los comandos
 Aceptar varios inputs de código "&&"
 Buscar mejor implementacion de clase inputvalidator (main.py)		
 Autocomplete

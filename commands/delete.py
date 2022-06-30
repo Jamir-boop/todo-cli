@@ -7,22 +7,20 @@ class Delete(Command):
 
     keywords = ["delete", "del", "d"]
     help_text = """
-                {keyword}
-                {id}
-                Summary: Get help for a command.
-                Usage: {keyword} <command>
-    
+                "delete", "del", "d"
+                \tSummary: Delete a selected command.
+                \tUsage: {keywords} <id>
     """
 
     def do_command(self, id=None):
         if id:
-            normal_id = int(id) - 1
-            if normal_id < 0:
+            _id = int(id) - 1
+            if _id < 0:
                 self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} invalid"
                 return
             try:
                 DATA = self.load_todo()
-                del DATA["tasks"][normal_id]
+                del DATA["tasks"][_id]
 
             except IndexError:
                 self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} invalid"

@@ -4,12 +4,9 @@ from commands import Command
 class Help(Command):
 
     keywords = ["help", "h", "autsilio"]
-    help_text = """
-                main text guide
+    help_text = """lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Donec euismod, nisl eget consectetur sagittis, nisl nunc
     """
-
-    def get_suggestions(self, words):
-        return list(sorted(self.todo.commands.keys()))
 
     def do_command(self, *args):
         if not args:
