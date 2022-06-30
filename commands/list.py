@@ -29,9 +29,9 @@ class List(Command):
         for item in DATA["tasks"]:
             contador += 1
             if item["state"] == 1:
-                print(contador, "[•]", item["description"], "\n")
+                self.print_style_text(f"<number>{contador}</number> [•] <completed>{item['description']}</completed>\n")
             else:
-                print(contador, "[ ]", item["description"], "\n")
+                self.print_style_text(f"<number>{contador}</number> [ ] <pending>{item['description']}</pending>\n")
 
         # right prompt
         self.todo.rprompt_message = f"{self.todo.time_emoji} All tasks!"
@@ -42,4 +42,4 @@ class List(Command):
         for item in DATA["tasks"]:
             contador += 1
             if item["state"] == 0:
-                print(contador, "[ ]", item["description"], "\n")
+                self.print_style_text(f"<number>{contador}</number> [ ] <pending>{item['description']}</pending>\n")

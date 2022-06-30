@@ -2,12 +2,22 @@ import os
 import json
 
 from prompt_toolkit.styles import Style
+from prompt_toolkit import print_formatted_text, HTML
 
 TODO_FILE = "todo.json"
 
 
 class Command:
     keywords = []
+    style = Style.from_dict(
+        {
+            # "completed": "#ffcc00 bold",
+            # "pending": "#ffcc00",
+            'completed': '#858585 italic',
+            'pending': '#a8ff94',
+            'number': '#a697e8 bold'
+        }
+    )
 
     def __init__(self, todo, session):
         self.reset_todo()
@@ -21,6 +31,9 @@ class Command:
 
     def get_suggestions(self, words):
         return []
+
+    def print_style_text(self, text):
+        print_formatted_text(HTML(text), style=self.style)
 
     def do_command(self, *args):
         print("nothing happens")

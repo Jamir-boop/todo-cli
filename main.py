@@ -12,7 +12,7 @@ from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit.shortcuts import clear
 
 
-def look_for_history_file(filename):
+def look_for_file(filename):
     if not os.path.exists(filename):
         with open(filename, "w") as f:
             f.write("")
@@ -92,7 +92,8 @@ def load_commands(todo, session):
 def main_loop():
     todo = Todo()
 
-    look_for_history_file('.todo_history')
+    look_for_file('todo.json')
+    look_for_file('.todo_history')
     session = PromptSession(history=FileHistory('.todo_history'))
 
     load_commands(Todo, session)
