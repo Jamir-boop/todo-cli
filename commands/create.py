@@ -29,7 +29,7 @@ class Create(Command):
                     "time": f"{datetime.datetime.now()}"
                 }
             )
-            save_todo(DATA)
+            self.save_todo(DATA)
             self.todo.rprompt_message = f"{self.todo.time_emoji} Task {last_id} saved."
         else:
             self.todo.rprompt_message = f"{self.todo.time_emoji} Task has no content"
