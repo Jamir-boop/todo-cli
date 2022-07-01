@@ -54,6 +54,11 @@ class Command:
             file.seek(0)
             json.dump(DATA_INICIAL, file, indent=4)
 
+    def order_completed_tasks(self):
+        data = self.load_todo()
+        data["tasks"] = sorted(data["tasks"], key=lambda k: k['state'])
+        self.save_todo(data)
+
     def load_todo(self):
         with open(TODO_FILE) as file:
             return json.load(file)
