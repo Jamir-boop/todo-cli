@@ -17,10 +17,14 @@ class Delete(Command):
             if id == "completed" or id == "com":
                 self._delete_completed()
                 return
-
-            _id = int(id) - 1
         else:
             self.todo.rprompt_message = f"{self.todo.time_emoji} No task selected"
+            return
+        
+        try:
+            _id = int(id) - 1
+        except ValueError:
+            self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} invalid"
             return
 
         if _id < 0:

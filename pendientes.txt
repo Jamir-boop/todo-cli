@@ -1,12 +1,6 @@
 CRUD
-	delete 
-		agregar funcionalidad para borrar grupos de tasks con confirmacion
-	update
-		cambiar estado de task
-	list
-		listar primero pendientes luego completados ***
 	add
-		datetime no es necesario
+		agregar deadlines
 
 El estilo de help_text está roto (primera y segunda línea imprimen con tabulación)
 Agregar help_text a todos los comandos
@@ -29,6 +23,8 @@ Diseño
 
 INVESTIGAR 
 	Agregar funcionalidad de Aliases
+
+right prompt muestra tasks pendientes o tasks urgentes
 
 -------------------------------------------------------------
 Si el task está completado mover al final en todo.json (HECHO)

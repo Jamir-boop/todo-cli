@@ -3,7 +3,7 @@ from commands import Command
 
 class Help(Command):
 
-    keywords = ["help", "h", "autsilio"]
+    keywords = ["help", "h", "man", "autsilio"]
     help_text = """lorem ipsum dolor sit amet, consectetur adipiscing elit.
     Donec euismod, nisl eget consectetur sagittis, nisl nunc
     """
