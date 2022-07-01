@@ -1,10 +1,10 @@
-from prompt_toolkit.shortcuts import clear
-
 from commands import Command
+
+from prompt_toolkit.shortcuts import clear
 
 
 class Update(Command):
-    keywords = ['update', 'up', '=', 'edit']
+    keywords = ["update", "up", "=", "edit"]
 
     help_text = """
                 {keyword}
@@ -15,30 +15,27 @@ class Update(Command):
     """
 
     def do_command(self, *args):
-        if not args:
-            self.todo.rprompt_message = f"{self.todo.time_emoji} Task has no content"
-            return
-
-        try:
-            id = args[0]
-            _id = int(id) - 1
-        except ValueError:
-            self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} invalid"
+        if self.validate_task_selection(*args[0]):
+            self.print_style_text(
+                f"<error>{self.validate_task_selection(*args[0])}</error>")
             return
 
         DATA = self.load_todo()
         description = ' '.join(args[1:])
+        _id = int(args[0]) - 1
 
         try:
             DATA["tasks"][_id]["description"] = description
 
         except IndexError:
-            self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} invalid"
+            self.print_style_text(
+                f"<error>{self.validate_task_selection(*args[0])}</error>")
             return
 
         self.save_todo(DATA)
 
+        clear()
         list_open = self.todo.commands.get("list")
         list_open.do_command("list")
 
-        self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} updated."
+        self.print_style_text(f"<success>Task {args[0]} updated</success>")

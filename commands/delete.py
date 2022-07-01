@@ -1,49 +1,41 @@
 from commands import Command
 
-from prompt_toolkit.validation import Validator, ValidationError
-
 
 class Delete(Command):
 
-    keywords = ["delete", "del", "d"]
+    keywords = ["delete", "del", "d", "dd", "-"]
     help_text = """
                 "delete", "del", "d"
                 \tSummary: Delete a selected command.
                 \tUsage: {keywords} <id>
     """
 
-    def do_command(self, id=None):
-        if id:
-            if id == "completed" or id == "com":
-                self._delete_completed()
-                return
-        else:
-            self.todo.rprompt_message = f"{self.todo.time_emoji} No task selected"
-            return
-        
-        try:
-            _id = int(id) - 1
-        except ValueError:
-            self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} invalid"
+    def do_command(self, *args):
+        if self.validate_task_selection(*args):
+            self.print_style_text(
+                f"<error>{self.validate_task_selection(*args)}</error>")
             return
 
-        if _id < 0:
-            self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} invalid"
+        id = args[0]
+        if id == "completed" or id == "com":
+            self._delete_completed()
             return
+
+        _id = int(id) - 1
+
         try:
             DATA = self.load_todo()
             del DATA["tasks"][_id]
 
         except IndexError:
-            self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} invalid"
+            self.print_style_text(f"Task {id} invalid")
             return
 
         self.save_todo(DATA)
         list_open = self.todo.commands.get("list")
         list_open.do_command("list")
 
-        # right prompt
-        self.todo.rprompt_message = f"{self.todo.time_emoji} Task {id} deleted"
+        self.print_style_text(f"<success>Task {id} deleted</success>")
 
     def _delete_completed(self):
         DATA = self.load_todo()
@@ -57,5 +49,5 @@ class Delete(Command):
         list_open = self.todo.commands.get("list")
         list_open.do_command("list")
 
-        # right prompt
-        self.todo.rprompt_message = f"{self.todo.time_emoji} All completed tasks deleted"
+        self.print_style_text(
+            f"<success>All completed tasks deleted</success>")

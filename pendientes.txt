@@ -5,7 +5,7 @@ CRUD
 El estilo de help_text está roto (primera y segunda línea imprimen con tabulación)
 Agregar help_text a todos los comandos
 Aceptar varios inputs de código "&&"
-Buscar mejor implementacion de clase inputvalidator (main.py)		
+Buscar mejor implementacion de clase inputvalidator (main.py)
 Autocomplete
 	https://python-prompt-toolkit.readthedocs.io/en/master/pages/asking_for_input.html#nested-completion
 	agregar funcionalidad que lea sub-commandos de cada comando para crear un diccionario general que pasará a autocompletar
@@ -16,15 +16,12 @@ Agregar deadlines
 
 Config
 	ls listar compacto o detallado
-	temas
-
-Diseño
-	Tasks completados gris				
+	temas estilos
+	Agregar seleccion lenguaje
 
 INVESTIGAR 
 	Agregar funcionalidad de Aliases
 
-right prompt muestra tasks pendientes o tasks urgentes
 
 -------------------------------------------------------------
 Si el task está completado mover al final en todo.json (HECHO)
@@ -32,3 +29,5 @@ Si el task está completado mover al final en todo.json (HECHO)
 		commands/__init__.py>>order_completed_tasks()
 	Tomar en cuenta 
 		La ejecución de la funcion se da dentro del commando List, puede generar errores si el programa no hace List al iniciar.
+
+Right prompt muestra tasks pendientes o tasks urgentes

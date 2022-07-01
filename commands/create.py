@@ -1,11 +1,11 @@
 import datetime
-from prompt_toolkit.shortcuts import clear
 
+from prompt_toolkit.shortcuts import clear
 from commands import Command
 
 
 class Create(Command):
-    keywords = ['create', 'add', '+']
+    keywords = ["create", "add", "+", "new"]
 
     help_text = """
                 {keyword}
@@ -17,7 +17,7 @@ class Create(Command):
 
     def do_command(self, *args):
         if not args:
-            self.todo.rprompt_message = f"{self.todo.time_emoji} Task has no content"
+            self.print_style_text(f"Task has no content")
             return
 
         DATA = self.load_todo()
@@ -37,8 +37,7 @@ class Create(Command):
         )
         self.save_todo(DATA)
 
+        clear()
         list_open = self.todo.commands.get("list")
         list_open.do_command("list")
-
-        self.todo.rprompt_message = f"{self.todo.time_emoji} Task {last_id} saved."
-        
+        self.print_style_text(f"<success>New task saved.</success>")

@@ -1,10 +1,8 @@
-from prompt_toolkit.shortcuts import clear
-
 from commands import Command
 
 
-class Clear(Command):
-    keywords = ["clear", "cls", "c"]
+class Complete(Command):
+    keywords = ["complete", "done", "com", "f", "cc"]
 
     help_text = """
                 {keyword}
@@ -15,4 +13,4 @@ class Clear(Command):
     """
 
     def do_command(self, *args):
-        clear()
+        pass

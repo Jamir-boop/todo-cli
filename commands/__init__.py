@@ -15,7 +15,9 @@ class Command:
             # "pending": "#ffcc00",
             'completed': '#858585 italic',
             'pending': '#a8ff94',
-            'number': '#a697e8 bold'
+            'number': '#a697e8 bold',
+            'error': 'red bold',
+            'success': 'green bold',
         }
     )
 
@@ -66,3 +68,16 @@ class Command:
     def save_todo(self, data):
         with open(TODO_FILE, 'w') as file:
             json.dump(data, file, indent=4)
+
+    def validate_task_selection(self, *id):
+        if not id:
+            return "No task selected"
+
+        if len(id) > 1:
+            return "Select only one task"
+
+        if not str(id[0]).isdigit():
+            print(id)
+            return "Invalid task id"
+
+        return
