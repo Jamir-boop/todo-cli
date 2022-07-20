@@ -1,8 +1,7 @@
 El estilo de help_text está roto (primera y segunda línea imprimen con tabulación)
 Agregar help_text a todos los comandos
 Aceptar varios inputs de código "&&"
-Buscar mejor implementacion de clase inputvalidator (main.py) 
-	## activo en 13486e2
+Buscar mejor implementacion de clase inputvalidator (main.py) ## activo en 13486e2
 Autocomplete
 	https://python-prompt-toolkit.readthedocs.io/en/master/pages/asking_for_input.html#nested-completion
 	agregar funcionalidad que lea sub-commandos de cada comando para crear un diccionario general que pasará a autocompletar
@@ -20,5 +19,5 @@ Config
 Right prompt muestra tasks pendientes o tasks urgentes
 
 About prority
-	0 - can be done before deadline
-	1 - has to be done as soon as posible (gets highlighted as first prority task)
+	0 - normal
+	1 - HIGH PRIORITY - HAS TO BE DONE AS SOON AS POSIBLE (gets highlighted as first prority task)
