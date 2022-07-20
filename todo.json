@@ -19,7 +19,7 @@
             "priority": 0,
             "description": "pendiente con tres dias",
             "state": 0,
-            "deadline": "2022-07-23 00:07:28.238836"
+            "deadline": "2022-07-23 00:33:48.589942"
         },
         {
             "description": "crear clase de validator",
@@ -31,7 +31,7 @@
         {
             "id": 23,
             "priority": 0,
-            "description": "dies dias pendiente",
+            "description": "pendiente sin deadline",
             "state": 0,
             "deadline": "None"
         },

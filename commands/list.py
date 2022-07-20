@@ -15,8 +15,9 @@ class List(Command):
     """
 
     def do_command(self, *args):
-        self.sort_tasks()
-
+        sort_list = self.todo.commands.get("sort")
+        sort_list.do_command("sort")
+        
         if args:
             if args[0] == 'pen' or args[0] == 'pending':
                 self._pending()
@@ -44,9 +45,9 @@ class List(Command):
                         f"<number>{contador}</number> [ ] <pending>{item['description']}</pending>{deadline}\n")
 
         # right prompt
-        # pending = self._count_pending()
-        # self.todo.rprompt_message = f"{pending} pending tasks! {self.todo.time_emoji}"
-        self.todo.rprompt_message = f"{self.todo.time_emoji}"
+        pending = self._count_pending()
+        self.todo.rprompt_message = f"{pending} pending tasks! {self.todo.time_emoji}"
+        # self.todo.rprompt_message = f"{self.todo.time_emoji}"
 
     def _time_left(self, deadline):
         import datetime

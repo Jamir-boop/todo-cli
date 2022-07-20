@@ -1,10 +1,3 @@
-ADD TIENE ERRORES PRIORITY Y DEADLINE
-
-CRUD
-	prority
-		0 - can be done in free time before deadline
-		1 - has to be done as soon as posible (gets highlighted as first prority task)
-
 El estilo de help_text está roto (primera y segunda línea imprimen con tabulación)
 Agregar help_text a todos los comandos
 Aceptar varios inputs de código "&&"
@@ -23,15 +16,9 @@ Config
 	temas estilos
 	Agregar seleccion lenguaje
 
-INVESTIGAR 
-	Agregar funcionalidad de Aliases
-
-
 -------------------------------------------------------------
-Si el task está completado mover al final en todo.json (HECHO)
-	Ubicacion
-		commands/__init__.py>>order_completed_tasks()
-	Tomar en cuenta 
-		La ejecución de la funcion se da dentro del commando List, puede generar errores si el programa no hace List al iniciar.
-
 Right prompt muestra tasks pendientes o tasks urgentes
+
+About prority
+	0 - can be done before deadline
+	1 - has to be done as soon as posible (gets highlighted as first prority task)

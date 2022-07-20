@@ -48,7 +48,7 @@ class Todo():
 
     @keybinds.add('c-d')
     def _(event):
-        clear()
+        # clear()
         exit()
 
 
@@ -97,7 +97,7 @@ def main_loop():
 
     load_commands(Todo, session)
 
-    # list when the app starts
+    clear()
     list_open = todo.commands.get("list")
     list_open.do_command("list")
     while True:

@@ -1,9 +1,6 @@
 import datetime
-from distutils.command.clean import clean
-from tabnanny import check
 
 from prompt_toolkit.shortcuts import clear
-
 from commands import Command
 
 
