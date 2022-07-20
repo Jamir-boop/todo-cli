@@ -43,7 +43,7 @@ class Todo():
 
     @keybinds.add('c-c')
     def _(event):
-        clear()
+        # clear()
         exit()
 
     @keybinds.add('c-d')
@@ -53,7 +53,7 @@ class Todo():
 
 
 class inputValidator(Validator):
-    # este validador no me convence para nada
+    # validates all registered commands
     def __init__(self, todoobject):
         self.todoobject = todoobject
 
@@ -105,7 +105,7 @@ def main_loop():
             "$ ",
             # completer=ClaseCOmpletadora(),
             # auto_suggest=AutoSuggestFromHistory(),
-            validator=inputValidator(todo),
+            # validator=inputValidator(todo),
             key_bindings=todo.keybinds,
             rprompt=todo.rprompt_message,
             style=todo.style,

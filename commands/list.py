@@ -1,3 +1,4 @@
+from queue import PriorityQueue
 from commands import Command
 
 
@@ -15,7 +16,7 @@ class List(Command):
     """
 
     def do_command(self, *args):
-        self.order_completed_tasks()
+        self.sort_tasks()
 
         if args:
             if args[0] == 'pen' or args[0] == 'pending':
@@ -30,22 +31,50 @@ class List(Command):
                 self.print_style_text(
                     f"<number>{contador}</number> [•] <completed>{item['description']}</completed>\n")
             else:
-                self.print_style_text(
-                    f"<number>{contador}</number> [ ] <pending>{item['description']}</pending>\n")
+                deadline = ""
+                if item["deadline"] != "null":
+                    deadline = self._time_left(item["deadline"])
+                    deadline = f" • <deadline>{deadline} days left </deadline>"
+                    
+                if item["priority"] == 2:
+                    self.print_style_text(
+                        f"<number>{contador}</number> [ ] <high_priority>{item['description']}</high_priority>{deadline}\n")
+                    continue
+                else:
+                    self.print_style_text(
+                        f"<number>{contador}</number> [ ] <pending>{item['description']}</pending>{deadline}\n")
 
         # right prompt
         # pending = self._count_pending()
         # self.todo.rprompt_message = f"{pending} pending tasks! {self.todo.time_emoji}"
         self.todo.rprompt_message = f"{self.todo.time_emoji}"
 
-    def _pending(self, *args):
+    def _time_left(self, deadline):
+        import datetime
+
+        # calculate time left in days
+        time_left = datetime.datetime.strptime(
+            deadline, "%Y-%m-%d %H:%M:%S.%f") - datetime.datetime.now()
+        return time_left.days
+
+    def _pending(self):
         DATA = self.load_todo()
         contador = 0
         for item in DATA["tasks"]:
             contador += 1
             if item["state"] == 0:
-                self.print_style_text(
-                    f"<number>{contador}</number> [ ] <pending>{item['description']}</pending>\n")
+                deadline = ""
+                if item["deadline"] != "null":
+                    deadline = self._time_left(item["deadline"])
+                    deadline = f" • <deadline>{deadline} days left </deadline>"
+                    
+                if item["priority"] == 2:
+                    self.print_style_text(
+                        f"<number>{contador}</number> [ ] <high_priority>{item['description']}</high_priority>{deadline}\n")
+                    continue
+                else:
+                    self.print_style_text(
+                        f"<number>{contador}</number> [ ] <pending>{item['description']}</pending>{deadline}\n")
 
     def _count_pending(self):
         DATA = self.load_todo()

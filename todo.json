@@ -1,31 +1,38 @@
 {
     "tasks": [
         {
-            "id": 12,
-            "priority": 1,
-            "description": "Primer pendiente y por eso el mejor",
-            "time": "2022-06-04 20:29:28.294142",
-            "state": 0
+            "id": 23,
+            "priority": 2,
+            "description": "dies dias pendiente",
+            "state": 0,
+            "deadline": "2022-07-20 23:58:00.146744"
         },
         {
-            "id": 13,
-            "priority": 0,
-            "description": "crear clase de validator",
-            "time": "2022-06-04 20:29:28.294142",
-            "state": 0
-        },
-        {
+            "description": "este es un documento con priority 2",
+            "deadline": "2022-07-30 23:29:49.074971",
             "id": 40,
             "priority": 2,
-            "description": "este es un documento",
-            "time": "2022-06-08 23:29:49.074971",
             "state": 0
         },
         {
+            "description": "Primer pendiente y por eso el mejor",
+            "deadline": "2022-06-04 23:29:49.074971",
+            "id": 12,
+            "priority": 1,
+            "state": 0
+        },
+        {
+            "description": "crear clase de validator",
+            "deadline": "null",
+            "id": 13,
+            "priority": 0,
+            "state": 0
+        },
+        {
+            "description": "organizar clases",
+            "deadline": "null",
             "id": 22,
-            "priority": 2,
-            "description": "organizar oow",
-            "time": "2022-06-04 20:29:28.294142",
+            "priority": 0,
             "state": 1
         }
     ]

@@ -1,4 +1,6 @@
 import datetime
+from distutils.command.clean import clean
+from tabnanny import check
 
 from prompt_toolkit.shortcuts import clear
 from commands import Command
@@ -25,19 +27,60 @@ class Create(Command):
         last_id = int(DATA["tasks"][-1]["id"])  # toma ultimo id del grupo
         last_id += 1
 
-        description = ' '.join(args)
+        deadline_check_list = ["days:", "d:"]
+        priority_check_list = ["priority", "++"]
+        check_list = deadline_check_list + priority_check_list
+        deadline = self._check_days(args, deadline_check_list)
+        priority = self._check_priority(args, priority_check_list, deadline)
+
+        clean_args = self._clean_args(check_list, args)
+
+        description = ' '.join(clean_args)
         DATA["tasks"].append(
             {
                 "id": last_id,
-                "priority": 2,
+                "priority": priority,
                 "description": description,
                 "state": 0,
-                "time": f"{datetime.datetime.now()}"
+                "deadline": f"{deadline}"
             }
         )
+
         self.save_todo(DATA)
 
         clear()
         list_open = self.todo.commands.get("list")
         list_open.do_command("list")
         self.print_style_text(f"<success>New task saved.</success>")
+
+    def _clean_args(self, check_list, args):
+        clean_list = []
+        salida = []
+
+        for word in args:
+            for item in check_list:
+                if word.startswith(item):
+                    clean_list.append(word)
+
+        for word in args:
+            if not word in clean_list:
+                salida.append(word)
+        return salida
+
+    def _check_days(self, args, check_list):
+        for word in args:
+            for item in check_list:
+                if word.startswith(item):
+                    days = "".join(filter(str.isdigit, word))
+                    days = int(days)
+                    return datetime.datetime.now() + datetime.timedelta(days=days)
+        return None
+
+    def _check_priority(self, args, check_list, deadline):
+        for word in check_list:
+            if word in args:
+                return 2
+        if deadline:
+            return 1
+
+        return 0

@@ -1,11 +1,15 @@
+ADD TIENE ERRORES PRIORITY Y DEADLINE
+
 CRUD
-	add
-		agregar deadlines
+	prority
+		0 - can be done in free time before deadline
+		1 - has to be done as soon as posible (gets highlighted as first prority task)
 
 El estilo de help_text está roto (primera y segunda línea imprimen con tabulación)
 Agregar help_text a todos los comandos
 Aceptar varios inputs de código "&&"
-Buscar mejor implementacion de clase inputvalidator (main.py)
+Buscar mejor implementacion de clase inputvalidator (main.py) 
+	## activo en 13486e2
 Autocomplete
 	https://python-prompt-toolkit.readthedocs.io/en/master/pages/asking_for_input.html#nested-completion
 	agregar funcionalidad que lea sub-commandos de cada comando para crear un diccionario general que pasará a autocompletar

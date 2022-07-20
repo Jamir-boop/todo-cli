@@ -1,4 +1,3 @@
-import os
 import json
 
 from prompt_toolkit.styles import Style
@@ -13,6 +12,7 @@ class Command:
         {
             # "completed": "#ffcc00 bold",
             # "pending": "#ffcc00",
+            'high_priority': "peru bold",
             'completed': '#858585 italic',
             'pending': '#a8ff94',
             'number': '#a697e8 bold',
@@ -50,15 +50,14 @@ class Command:
             print(f"No help text available for: {keyword}")
 
     def reset_todo(self):
-        DATA_INICIAL = {"tasks": [{"id": 12, "priority": 1, "description": "Primer pendiente y por eso el mejor", "time": "2022-06-04 20:29:28.294142", "state": 0}, {"id": 13, "priority": 0, "description": "crear clase de validator", "time": "2022-06-04 20:29:28.294142",
-                                                                                                                                                                      "state": 0}, {"id": 22, "priority": 2, "description": "organizar clases", "time": "2022-06-04 20:29:28.294142", "state": 1}, {"id": 40, "priority": 2, "description": "este es un documento", "time": "2022-06-08 23:29:49.074971", "state": 0}]}
+        DATA_INICIAL = {"tasks":[{"description":"Primer pendiente y por eso el mejor","deadline":"2022-06-04 23:29:49.074971","id":12,"priority":1,"state":0},{"description":"crear clase de validator","deadline":"null","id":13,"priority":0,"state":0},{"description":"organizar clases","deadline":"null","id":22,"priority":0,"state":1},{"description":"este es un documento con priority 2","deadline":"2022-07-30 23:29:49.074971","id":40,"priority":2,"state":0}]}
         with open(TODO_FILE, 'w') as file:
             file.seek(0)
             json.dump(DATA_INICIAL, file, indent=4)
 
-    def order_completed_tasks(self):
+    def sort_tasks(self):
         data = self.load_todo()
-        data["tasks"] = sorted(data["tasks"], key=lambda k: k['state'])
+        data["tasks"] = sorted(data["tasks"], key=lambda k: (k['state'], -k['priority'], k['deadline']))
         self.save_todo(data)
 
     def load_todo(self):
