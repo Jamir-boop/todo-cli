@@ -1,7 +1,7 @@
 import json
 
+from prompt_toolkit import HTML, print_formatted_text
 from prompt_toolkit.styles import Style
-from prompt_toolkit import print_formatted_text, HTML
 
 TODO_FILE = "todo.json"
 
@@ -50,14 +50,16 @@ class Command:
             print(f"No help text available for: {keyword}")
 
     def reset_todo(self):
-        DATA_INICIAL = {"tasks":[{"description":"Primer pendiente y por eso el mejor","deadline":"2022-06-04 23:29:49.074971","id":12,"priority":1,"state":0},{"description":"crear clase de validator","deadline":"null","id":13,"priority":0,"state":0},{"description":"organizar clases","deadline":"null","id":22,"priority":0,"state":1},{"description":"este es un documento con priority 2","deadline":"2022-07-30 23:29:49.074971","id":40,"priority":2,"state":0}]}
+        DATA_INICIAL = {"tasks": [{"description": "Primer pendiente y por eso el mejor", "deadline": "2022-06-04 23:29:49.074971", "id": 12, "priority": 0, "state": 0}, {"description": "crear clase de validator", "deadline": "None", "id": 13, "priority": 0,
+                                                                                                                                                                          "state": 0}, {"description": "organizar clases", "deadline": "None", "id": 22, "priority": 0, "state": 1}, {"description": "este es un documento con priority 1", "deadline": "2022-07-30 23:29:49.074971", "id": 40, "priority": 1, "state": 0}]}
         with open(TODO_FILE, 'w') as file:
             file.seek(0)
             json.dump(DATA_INICIAL, file, indent=4)
 
     def sort_tasks(self):
         data = self.load_todo()
-        data["tasks"] = sorted(data["tasks"], key=lambda k: (k['state'], -k['priority'], k['deadline']))
+        data["tasks"] = sorted(data["tasks"], key=lambda k: (
+            k['state'], -k['priority'], k['deadline']))
         self.save_todo(data)
 
     def load_todo(self):

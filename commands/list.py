@@ -1,4 +1,3 @@
-from queue import PriorityQueue
 from commands import Command
 
 
@@ -32,11 +31,11 @@ class List(Command):
                     f"<number>{contador}</number> [•] <completed>{item['description']}</completed>\n")
             else:
                 deadline = ""
-                if item["deadline"] != "null":
+                if item["deadline"] != "None":
                     deadline = self._time_left(item["deadline"])
                     deadline = f" • <deadline>{deadline} days left </deadline>"
                     
-                if item["priority"] == 2:
+                if item["priority"] == 1:
                     self.print_style_text(
                         f"<number>{contador}</number> [ ] <high_priority>{item['description']}</high_priority>{deadline}\n")
                     continue

@@ -3,6 +3,7 @@ from distutils.command.clean import clean
 from tabnanny import check
 
 from prompt_toolkit.shortcuts import clear
+
 from commands import Command
 
 
@@ -31,7 +32,7 @@ class Create(Command):
         priority_check_list = ["priority", "++"]
         check_list = deadline_check_list + priority_check_list
         deadline = self._check_days(args, deadline_check_list)
-        priority = self._check_priority(args, priority_check_list, deadline)
+        priority = self._check_priority(args, priority_check_list)
 
         clean_args = self._clean_args(check_list, args)
 
@@ -76,11 +77,8 @@ class Create(Command):
                     return datetime.datetime.now() + datetime.timedelta(days=days)
         return None
 
-    def _check_priority(self, args, check_list, deadline):
+    def _check_priority(self, args, check_list):
         for word in check_list:
             if word in args:
-                return 2
-        if deadline:
-            return 1
-
+                return 1
         return 0
